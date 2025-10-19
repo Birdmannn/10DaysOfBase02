@@ -38,55 +38,21 @@
   text-decoration: underline;
 }
 
-.walletSection {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-end;
-}
-
-.walletButtons {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.walletButtons button {
-  padding: 0.5rem 1rem;
-  background-color: #0052ff;
-  color: white;
-  border: none;
-  border-radius: 0.375rem;
-  cursor: pointer;
+.connectionInfo {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.02);
+  text-align: center;
   font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  max-width: 600px;
+  word-break: break-all;
 }
 
-.walletButtons button:hover {
-  background-color: #0041cc;
-}
-
-.walletButtons button:active {
-  background-color: #003399;
-}
-
-.connectedInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  text-align: right;
-  font-size: 0.875rem;
-}
-
-.connectedInfo p {
-  margin: 0;
-}
-
-.error {
-  color: #dc2626;
-  font-size: 0.875rem;
-  margin: 0;
-  text-align: right;
+@media (prefers-color-scheme: dark) {
+  .connectionInfo {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+  }
 }

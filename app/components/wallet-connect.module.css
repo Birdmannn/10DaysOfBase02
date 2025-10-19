@@ -1,0 +1,257 @@
+.connectedContainer {
+  position: relative;
+}
+
+.connectedButton {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--foreground);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-source-code-pro), monospace;
+}
+
+.connectedButton:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+@keyframes blinkRed {
+  0%, 50%, 100% {
+    color: #ef4444;
+    border-color: #ef4444;
+  }
+  25%, 75% {
+    color: #dc2626;
+    border-color: #dc2626;
+  }
+}
+
+.connectedButton.wrongNetworkBlink {
+  animation: blinkRed 1s ease-in-out infinite;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 200px;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dropdown {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+}
+
+.networkStatus {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.8rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .networkStatus {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.networkStatusText {
+  display: block;
+  line-height: 1.4;
+}
+
+.networkStatusText.correctNetwork {
+  color: #10b981;
+}
+
+.networkStatusText.wrongNetwork {
+  color: #ef4444;
+}
+
+.balanceSection {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .balanceSection {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+.balanceLabel {
+  color: var(--foreground);
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+.balanceValue {
+  color: var(--foreground);
+  font-weight: 600;
+  font-family: var(--font-source-code-pro), monospace;
+}
+
+.disconnectButton {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  color: var(--foreground);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.2s ease;
+}
+
+.disconnectButton:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .disconnectButton:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.singleWalletButton {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--foreground);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.singleWalletButton:hover:not(:disabled) {
+  background: var(--foreground);
+  color: var(--background);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  .singleWalletButton:hover:not(:disabled) {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+}
+
+.singleWalletButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.singleWalletButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dropdownContainer {
+  position: relative;
+}
+
+.dropdownButton {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--foreground);
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--foreground);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.dropdownButton:hover:not(:disabled) {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.dropdownButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dropdownIcon {
+  font-size: 1.2rem;
+}
+
+.walletMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: var(--background);
+  border: 1px solid var(--foreground);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 180px;
+  overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+  .walletMenu {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  }
+}
+
+.walletMenuItem {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: none;
+  color: var(--foreground);
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.walletMenuItem:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .walletMenuItem:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.walletMenuItem:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.menuItemIcon {
+  font-size: 1.25rem;
+  min-width: 1.5rem;
+}
+
+.menuItemName {
+  font-weight: 500;
+}
