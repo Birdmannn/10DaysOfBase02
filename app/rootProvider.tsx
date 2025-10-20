@@ -5,6 +5,8 @@ import { OnchainKitProvider } from "@coinbase/onchainkit";
 import { WagmiProvider } from "wagmi";
 import { wagmiConfig } from "./wagmi.config"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ToastProvider } from "./context/ToastContext";
+import { ToastContainer } from "./components/Toast";
 import "@coinbase/onchainkit/styles.css";
 
 const queryClient = new QueryClient();
@@ -14,21 +16,24 @@ export function RootProvider({ children }: { children: ReactNode }) {
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <OnchainKitProvider
-          apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-          chain={base}
-          config={{
-            appearance: {
-              mode: "auto",
-            },
-            wallet: {
-              display: "modal",
-              preference: "all",
-            },
-          }}
-        >
-          {children}
-        </OnchainKitProvider>
+        <ToastProvider>
+          <OnchainKitProvider
+            apiKey={process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
+            chain={base}
+            config={{
+              appearance: {
+                mode: "auto",
+              },
+              wallet: {
+                display: "modal",
+                preference: "all",
+              },
+            }}
+          >
+            {children}
+            <ToastContainer />
+          </OnchainKitProvider>
+        </ToastProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
-import { createPublicClient, createWalletClient, custom, http } from "viem";
+import { useAccount, useWalletClient } from "wagmi";
+import { createPublicClient, http } from "viem";
 import { baseSepolia } from "viem/chains";
 import styles from "./funding-contract.module.css";
 import { CONTRACT_ADDRESS, FUNDING_ABI as ABI } from "./Funding";
+import { useToast } from "@/app/context/ToastContext";
 
 interface Donation {
   id: number;
@@ -18,6 +19,8 @@ interface Donation {
 
 export function FundingContract() {
   const { address, isConnected } = useAccount();
+  const { data: walletClient } = useWalletClient();
+  const { addToast } = useToast();
   const [donations, setDonations] = useState<Donation[]>([]);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<"browse" | "create">("browse");
@@ -109,21 +112,22 @@ export function FundingContract() {
 
   const handleCreateDonation = async () => {
     if (!isConnected || !address) {
-      alert("Please connect your wallet first");
+      addToast("Please connect your wallet first", "warning");
       return;
     }
 
     if (!createAmount || !createDescription) {
-      alert("Please fill in all fields");
+      addToast("Please fill in all fields", "warning");
+      return;
+    }
+
+    if (!walletClient) {
+      addToast("Wallet client not available", "error");
       return;
     }
 
     try {
       setTransactionPending(true);
-      const walletClient = createWalletClient({
-        chain: baseSepolia,
-        transport: custom(window.ethereum),
-      });
 
       const hash = await walletClient.writeContract({
         address: CONTRACT_ADDRESS as `0x${string}`,
@@ -139,10 +143,10 @@ export function FundingContract() {
       setActiveTab("browse");
 
       setTimeout(() => loadDonations(), 2000);
-      alert("Donation campaign created!");
+      addToast("Donation campaign created successfully!", "success");
     } catch (error) {
       console.error("Error creating donation:", error);
-      alert("Failed to create donation campaign");
+      addToast("Failed to create donation campaign", "error");
     } finally {
       setTransactionPending(false);
     }
@@ -189,21 +193,22 @@ export function FundingContract() {
 
   const handleDonate = async () => {
     if (!isConnected || !address) {
-      alert("Please connect your wallet first");
+      addToast("Please connect your wallet first", "warning");
       return;
     }
 
     if (selectedDonationId === null || !donateAmount) {
-      alert("Please select a donation and enter an amount");
+      addToast("Please select a donation and enter an amount", "warning");
+      return;
+    }
+
+    if (!walletClient) {
+      addToast("Wallet client not available", "error");
       return;
     }
 
     try {
       setTransactionPending(true);
-      const walletClient = createWalletClient({
-        chain: baseSepolia,
-        transport: custom(window.ethereum),
-      });
 
       const hash = await walletClient.writeContract({
         address: CONTRACT_ADDRESS as `0x${string}`,
@@ -221,10 +226,11 @@ export function FundingContract() {
       setIsDonateModalOpen(false);
 
       setTimeout(() => updateDonationProgress(donationIdToUpdate), 2000);
-      alert("Donation sent!");
+      addToast("Donation sent successfully!", "success");
     } catch (error) {
       console.error("Error donating:", error);
-      alert(`Failed to send donation: ${error}`);
+      const errorMessage = error instanceof Error ? error.message : "Failed to send donation";
+      addToast(errorMessage, "error");
     } finally {
       setTransactionPending(false);
     }

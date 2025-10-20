@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { useConnect, useAccount, useDisconnect, useBalance } from "wagmi";
 import { baseSepolia } from "viem/chains";
 import styles from "./wallet-connect.module.css";
+import { useToast } from "@/app/context/ToastContext";
 
 interface DetectedWallet {
   id: string;
@@ -19,17 +20,39 @@ export function WalletConnect() {
   const { address, isConnected, chain } = useAccount();
   const { data: balance } = useBalance({ address });
   const { disconnect } = useDisconnect();
+  const { addToast } = useToast();
   const [detectedWallets, setDetectedWallets] = useState<DetectedWallet[]>([]);
   const [isClient, setIsClient] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [previousConnection, setPreviousConnection] = useState<boolean>(false);
 
   const isCorrectNetwork = chain?.id === EXPECTED_CHAIN_ID;
   const isWrongNetwork = isConnected && !isCorrectNetwork;
 
+  const truncateAddress = (addr: string) => {
+    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+  };
+
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    if (isConnected && !previousConnection) {
+      addToast(`Wallet connected: ${truncateAddress(address || "")}`, "success");
+      setPreviousConnection(true);
+    } else if (!isConnected && previousConnection) {
+      addToast("Wallet disconnected", "info");
+      setPreviousConnection(false);
+    }
+
+    if (isConnected && isWrongNetwork) {
+      addToast(`Please switch to ${EXPECTED_CHAIN_NAME}`, "warning");
+    }
+  }, [isConnected, isWrongNetwork, address, isClient, previousConnection, addToast]);
 
   useEffect(() => {
     if (!isClient) return;
@@ -84,10 +107,6 @@ export function WalletConnect() {
       connect({ connector });
       setIsDropdownOpen(false);
     }
-  };
-
-  const truncateAddress = (addr: string) => {
-    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
   if (!isClient) return null;
